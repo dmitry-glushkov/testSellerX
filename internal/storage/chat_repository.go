@@ -13,3 +13,15 @@ func (cr *ChatRepository) Create(c *model.Chat) error {
 		c.Name,
 	).Scan(&c.ID, &c.CreatedAt)
 }
+
+func (cr *ChatRepository) GetChatById(id int) (*model.Chat, error) {
+	chat := &model.Chat{}
+	if err := cr.storage.db.QueryRow(
+		"SELECT * FROM Chat WHERE id = $1",
+		id,
+	).Scan(&chat.ID, &chat.Name, &chat.UsersID, &chat.CreatedAt); err != nil {
+		return nil, err
+	}
+
+	return chat, nil
+}

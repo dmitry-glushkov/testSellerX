@@ -23,13 +23,13 @@ func (ucr *UserToChatRepository) Create(c *model.Chat) error {
 	return nil
 }
 
-// Вовзвращает список чатов (chat_id) в которых состоит пользователь u
-func (ucr *UserToChatRepository) FindUserChats(u *model.User) ([]int, error) {
+// Вовзвращает список чатов (chat_id) в которых состоит пользователь u (user_id)
+func (ucr *UserToChatRepository) FindUserChats(userId int) ([]int, error) {
 	var chats_id []int
 
 	rows, err := ucr.storage.db.Query(
 		"SELECT chat_id FROM User_to_chat WHERE user_id = $1",
-		u.ID,
+		userId,
 	)
 	if err != nil {
 		return nil, err

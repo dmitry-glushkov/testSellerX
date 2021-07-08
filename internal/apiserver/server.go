@@ -3,26 +3,33 @@ package apiserver
 import (
 	"encoding/json"
 	"net/http"
+	"testSellerX/internal/storage"
 
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 )
 
 type server struct {
-	router *mux.Router
-	logger *logrus.Logger
+	router  *mux.Router
+	logger  *logrus.Logger
+	storage storage.Storage
 }
 
 // Создание и насройка сервера
-func newServer() *server {
+func newServer(storage storage.Storage) *server {
 	s := &server{
-		router: mux.NewRouter(),
-		logger: logrus.New(),
+		router:  mux.NewRouter(),
+		logger:  logrus.New(),
+		storage: storage,
 	}
 
 	s.configureRouter()
 
 	return s
+}
+
+func (s *server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	s.router.ServeHTTP(w, r)
 }
 
 // Связывание хэндлеров и соответствующих им URL
