@@ -9,9 +9,9 @@ type MessageRepository struct {
 
 func (mr *MessageRepository) Create(m *model.Message) error {
 	return mr.storage.db.QueryRow(
-		"INSERT INTO Messages (chat_id, author_id, message_text) VALUES ($1, $2, $3)",
+		"INSERT INTO Messages (chat_id, author_id, message_text) VALUES ($1, $2, $3) RETURNING (id, created_at)",
 		m.ChatID,
 		m.AuthorID,
 		m.Text,
-	).Scan(&m.ID)
+	).Scan(&m.ID, &m.CreatedAt)
 }

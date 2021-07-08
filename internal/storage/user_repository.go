@@ -9,7 +9,7 @@ type UserRepository struct {
 
 func (ur *UserRepository) Create(u *model.User) error {
 	return ur.storage.db.QueryRow(
-		"INSERT INTO Users (username) VALUES $1 RETURNING id;",
+		"INSERT INTO Users (username) VALUES $1 RETURNING (id, created_at)",
 		u.Username,
-	).Scan(&u.ID)
+	).Scan(&u.ID, &u.CreatedAt)
 }
