@@ -2,6 +2,7 @@ package model
 
 import "time"
 
+// Структура, описывающая сообщения
 type Message struct {
 	ID        int
 	ChatID    int
