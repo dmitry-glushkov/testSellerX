@@ -8,6 +8,6 @@ type Config struct {
 func NewConfig() *Config {
 	return &Config{
 		BindAddr:    ":9000",
-		DatabaseURL: "host=localhost dbname=tasksellerx sslmode=disable",
+		DatabaseURL: "postgres://postgres:@localhost:5432/tasksellerx?sslmode=disable",
 	}
 }

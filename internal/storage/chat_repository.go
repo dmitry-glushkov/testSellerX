@@ -9,9 +9,9 @@ type ChatRepository struct {
 
 func (cr *ChatRepository) Create(c *model.Chat) error {
 	return cr.storage.db.QueryRow(
-		"INSERT INTO Chat chat_name VALUES $1 RETURNING (id, created_at)",
+		"INSERT INTO Chat (chat_name) VALUES ($1) RETURNING id",
 		c.Name,
-	).Scan(&c.ID, &c.CreatedAt)
+	).Scan(&c.ID)
 }
 
 func (cr *ChatRepository) GetChatById(id int) (*model.Chat, error) {

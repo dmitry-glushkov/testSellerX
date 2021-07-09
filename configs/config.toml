@@ -1,2 +1,4 @@
 bind_addr = ":9000"
-database_url = "host=llocalhost dbname=tasksellerx sslmode=disable"
+#database_url = "postgres://postgres:@postgres:5432/tasksellerx?sslmode=disable"
+
+database_url = "user=postgres host=localhost port=5432 dbname=tasksellerx sslmode=disable"

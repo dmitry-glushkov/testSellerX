@@ -9,18 +9,18 @@ type MessageRepository struct {
 
 func (mr *MessageRepository) Create(m *model.Message) error {
 	return mr.storage.db.QueryRow(
-		"INSERT INTO Messages (chat_id, author_id, message_text) VALUES ($1, $2, $3) RETURNING (id, created_at)",
+		"INSERT INTO Messages (chat_id, author_id, message_text) VALUES ($1, $2, $3) RETURNING id",
 		m.ChatID,
 		m.AuthorID,
 		m.Text,
-	).Scan(&m.ID, &m.CreatedAt)
+	).Scan(&m.ID)
 }
 
 func (mr *MessageRepository) GetChatMessages(chatId int) ([]model.Message, error) {
 	var messages []model.Message
 
 	rows, err := mr.storage.db.Query(
-		"SELECT (id, chat_id, author_id, message_text, created_at) FROM Messages WHERE chat_id = $1",
+		"SELECT id, chat_id, author_id, message_text, created_at FROM Messages WHERE chat_id = $1",
 		chatId,
 	)
 	if err != nil {
