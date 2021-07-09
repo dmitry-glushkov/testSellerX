@@ -2,5 +2,3 @@ tmp.md
 /migrator
 /var
 wait-for-it.sh
-./docker-compose.yml
-Dockerfile
