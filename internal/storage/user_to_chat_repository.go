@@ -1,6 +1,9 @@
 package storage
 
-import "testSellerX/internal/model"
+import (
+	"fmt"
+	"testSellerX/internal/model"
+)
 
 // Отношение многие ко многим между пользователями и чатами
 // Работа с таблицей User_to_chat
@@ -10,7 +13,9 @@ type UserToChatRepository struct {
 
 // Создание новой записи в User_to_chat с информацией о пользователях (user_id) и их чатами (chat_id)
 func (ucr *UserToChatRepository) Create(c *model.Chat) error {
-	for userId := range c.UsersID {
+	for _, userId := range c.UsersID {
+		fmt.Println()
+		fmt.Print(userId)
 		err := ucr.storage.db.QueryRow(
 			"INSERT INTO User_to_chat (chat_id, user_id) VALUES ($1, $2)",
 			c.ID,

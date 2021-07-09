@@ -2,6 +2,7 @@ package apiserver
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"sort"
 	"testSellerX/internal/model"
@@ -51,14 +52,17 @@ func (s *server) handleChatCreate() http.HandlerFunc {
 			Name:    req.ChatName,
 			UsersID: req.Users,
 		}
+		fmt.Print("1")
 		if err := s.storage.ChatRepos().Create(c); err != nil {
 			s.error(w, r, http.StatusUnprocessableEntity, err)
 			return
 		}
+		fmt.Print("2")
 		if err := s.storage.UserToChatRepos().Create(c); err != nil {
 			s.error(w, r, http.StatusUnprocessableEntity, err)
 			return
 		}
+		fmt.Print("3")
 
 		s.respond(w, r, http.StatusCreated, c.ID)
 	})
@@ -113,7 +117,7 @@ func (s *server) handleGetUserChats() http.HandlerFunc {
 		}
 
 		var latestMessagesInChats []time.Time
-		for chatId := range userChats_id {
+		for _, chatId := range userChats_id {
 			chatMessages, err := s.storage.MessageRepos().GetChatMessages(chatId)
 			if err != nil {
 				s.error(w, r, http.StatusNotFound, err)
