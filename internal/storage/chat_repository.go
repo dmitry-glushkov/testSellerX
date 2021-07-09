@@ -19,9 +19,35 @@ func (cr *ChatRepository) GetChatById(id int) (*model.Chat, error) {
 	if err := cr.storage.db.QueryRow(
 		"SELECT * FROM Chat WHERE id = $1",
 		id,
-	).Scan(&chat.ID, &chat.Name, &chat.UsersID, &chat.CreatedAt); err != nil {
+	).Scan(&chat.ID, &chat.Name, &chat.CreatedAt); err != nil {
 		return nil, err
 	}
 
+	chat.UsersID, _ = cr.FindChatUsers(chat.ID)
+
 	return chat, nil
+}
+
+func (cr *ChatRepository) FindChatUsers(chatId int) ([]int, error) {
+	var users_id []int
+
+	rows, err := cr.storage.db.Query(
+		"SELECT user_id FROM User_to_chat WHERE chat_id = $1",
+		chatId,
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var tmp int
+		err := rows.Scan(&tmp)
+		if err != nil {
+			return nil, err
+		}
+		users_id = append(users_id, tmp)
+	}
+
+	return users_id, nil
 }

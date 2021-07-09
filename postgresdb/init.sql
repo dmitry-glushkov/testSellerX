@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS User_to_chat (
 CREATE TABLE IF NOT EXISTS Messages (
     id serial NOT NULL PRIMARY KEY,
     chat_id int REFERENCES Chat (id),
-    author_id int REFERENCES Users (id),
+    user_id int REFERENCES Users (id),
     message_text text NOT NULL,
     created_at timestamp DEFAULT CURRENT_TIMESTAMP
 );

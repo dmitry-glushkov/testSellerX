@@ -1,8 +1,11 @@
-version: "3.3"
+version: "3"
 
 services:
-    server:
+    db:
         build:
-            context: .
+            context: /postgresdb
+            dockerfile: db.Dockerfile
+        volumes:
+            - ./var/pgdata:/var/lib/postgresql/data
         ports:
-            - "9000:9000"
+            - 5432:5432

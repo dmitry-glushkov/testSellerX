@@ -1,7 +1,6 @@
 package storage
 
 import (
-	"fmt"
 	"testSellerX/internal/model"
 )
 
@@ -14,16 +13,11 @@ type UserToChatRepository struct {
 // Создание новой записи в User_to_chat с информацией о пользователях (user_id) и их чатами (chat_id)
 func (ucr *UserToChatRepository) Create(c *model.Chat) error {
 	for _, userId := range c.UsersID {
-		fmt.Println()
-		fmt.Print(userId)
-		err := ucr.storage.db.QueryRow(
+		ucr.storage.db.Exec(
 			"INSERT INTO User_to_chat (chat_id, user_id) VALUES ($1, $2)",
 			c.ID,
 			userId,
-		).Scan()
-		if err != nil {
-			return err
-		}
+		)
 	}
 	return nil
 }
